@@ -7,6 +7,8 @@ function getUsuarios(req, res) {
 function crearUsuario(req, res) {
   const { nombre, edad } = req.body;
 
+  //throw new Error("Falló la creación!");
+
   const nuevo = {
     id: Date.now(),
     nombre,
