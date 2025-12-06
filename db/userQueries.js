@@ -13,4 +13,20 @@ async function createUser(name, email) {
   return result.rows[0];
 }
 
-module.exports = { getAllUsers, createUser };
+async function updateUser(name, email, id) {
+  const result = await pool.query(
+    "UPDATE users SET name = $1, email = $2 WHERE id = $3 RETURNING *"
+    [name, email, id]
+  );
+  return result.rows[0];
+}
+
+async function deleteUser(id) {
+  const result = pool.query(
+    "DELETE FROM users WHERE id = $1 RETURNING *",
+    [id]
+  );
+  return result.rows[0];
+}
+
+module.exports = { getAllUsers, createUser, updateUser, deleteUser};

@@ -1,7 +1,7 @@
-let usuarios = require('../data/usuarios');
-const { getAllUsers, createUser } = require("../db/userQueries");
+//let usuarios = require('../data/usuarios'); base de datos local
+const { getAllUsers, createUser, updateUser, deleteUser } = require("../db/userQueries");
 
-async function getUsuarios(req, res, next) {
+async function obtenerUsuarios(req, res, next) {
   try {
     const users = await getAllUsers();
     res.json(users);
@@ -20,16 +20,32 @@ async function crearUsuario(req, res, next) {
   }
 }
 
-function borrarUsuario(req, res) {
-  const id = Number(req.params.id);
+async function actualizarUsuario(req, res, next) {
+  try {
+    const id = Number(req.params.id);
+    const { name, email } = req.body;
+    const updatedUser = await updateUser(name, email, id);
+    if (!updatedUser) return res.status(404).json({ error: "Usuario no encontrado" });
+    res.json(updatedUser)
+  } catch (err) {
+    next(err);
+  }
+}
 
-  usuarios = usuarios.filter(u => u.id !== id);
-
-  res.json({ mensaje: "Usuario eliminado" });
+async function borrarUsuario(req, res, next) {
+  try {
+    const id = Number(req.params.id);
+    const deletedUser = await deleteUser(id);
+    if (!deletedUser) return res.status(404).json({ error: "Usuario no encontrado" });
+    res.json(deletedUser)
+  } catch (err) {
+    next(err);
+  }
 }
 
 module.exports = {
-  getUsuarios,
+  obtenerUsuarios,
   crearUsuario,
+  actualizarUsuario,
   borrarUsuario
 };
