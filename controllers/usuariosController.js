@@ -1,23 +1,23 @@
 let usuarios = require('../data/usuarios');
+const { getAllUsers, createUser } = require("../db/userQueries");
 
-function getUsuarios(req, res) {
-  res.json(usuarios);
+async function getUsuarios(req, res, next) {
+  try {
+    const users = await getAllUsers();
+    res.json(users);
+  } catch (err) {
+    next(err);
+  }
 }
 
-function crearUsuario(req, res) {
-  const { nombre, edad } = req.body;
-
-  //throw new Error("Falló la creación!");
-
-  const nuevo = {
-    id: Date.now(),
-    nombre,
-    edad
-  };
-
-  usuarios.push(nuevo);
-
-  res.status(201).json(nuevo);
+async function crearUsuario(req, res, next) {
+  try {
+    const { name, email } = req.body;
+    const newUser = await createUser(name, email);
+    res.status(201).json(newUser);
+  } catch (err) {
+    next(err);
+  }
 }
 
 function borrarUsuario(req, res) {

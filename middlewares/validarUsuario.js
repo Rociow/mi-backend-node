@@ -1,6 +1,6 @@
-function validarUsuario(req, res, next) {
-    const { nombre } = req.body;
-    if (!nombre || nombre.trim() === '') {
+ function validarUsuario(req, res, next) {
+    const { name } = req.body;
+    if (!name || name.trim() === '') {
         return res.status(400).json({ error: "El campo 'nombre' es obligatorio"});
     }
 
