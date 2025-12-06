@@ -1,6 +1,9 @@
 const express = require('express');
+const logger = require('./middlewares/logger');
 const app = express();
 const usuariosRoutes = require('./routes/usuarios');
+
+app.use(logger); // <--- ACTIVAMOS EL MIDDLEWARE
 
 app.use(express.json());
 
